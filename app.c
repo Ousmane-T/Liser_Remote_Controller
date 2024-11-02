@@ -390,12 +390,13 @@ void navigation_SourceControl(){
                     //statusPanelViewConfig_2 = false;
                     
                     //legato_showScreen(screenID_LoadConfig);
-                    load_configuration(test_config, 2);
+                    load_configuration();
                     legato_showScreen(screenID_SourceControl);
                     screenStates[SourceControl].currentState = STATE_INIT;
                     break;
                 case BUTTON_UPLOAD:
                     save_configuration();
+                    
                     //init_widgetScreenSourceControl();
                     screenStates[SourceControl].currentState = STATE_NAVIGATION;
                     break;

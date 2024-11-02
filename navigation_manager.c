@@ -1,5 +1,6 @@
 
 #include "navigation_manager.h"
+#include "flash_sst26.h"
 
 Widget_cr widgetsScreen_SourceControl[15]; // 6 widgets pour Screen0
 Widget_cr widgetsScreen_AddChannel[15]; // 15 widgets pour Screen1
@@ -621,11 +622,25 @@ void save_configuration() {
         }
         
         // Ici appeler la fonction de saveConfiguration dans la memoire , en passant le nombre de configuration aussi dans le parametres alors
+        sst26Data.writeState = SST26_STATES_WRITE_INIT;
+        while(sst26Data.writeState != SST26_STATES_WRITE_IDLE){
+            SST26_SaveConfig(configurations, 2);
+        }
+        
+        printf("ggsfgsdf");
+        
     }
 }
 
 
-void load_configuration(uint8_t configurations[][33], int configCount) {
+void load_configuration() {
+    
+    int configCount = 2;
+    sst26Data.readState = SST26_STATES_READ_MEMORY;
+    while(sst26Data.readState != SST26_STATES_READ_IDLE){
+            SST26_LoadConfig(rdata);
+    }
+    
     statusPanelViewConfig_1 = false;
     statusPanelViewConfig_2 = false;
     currentConfigIndex = configCount;
@@ -639,69 +654,69 @@ void load_configuration(uint8_t configurations[][33], int configCount) {
         int index = 0;
 
         // Mode
-        channelConfigs[i].mode = configurations[i][index++];
+        channelConfigs[i].mode = rdata[i][index++];
         
         // Current Mode
-        channelConfigs[i].currentMode = configurations[i][index++];
+        channelConfigs[i].currentMode = rdata[i][index++];
         
         // Trigger Type
-        channelConfigs[i].triggerType = configurations[i][index++];
+        channelConfigs[i].triggerType = rdata[i][index++];
 
         // Current Value (4 octets)
-        uint8_t byte1 = configurations[i][index++];
-        uint8_t byte2 = configurations[i][index++];
-        uint8_t byte3 = configurations[i][index++];
-        uint8_t byte4 = configurations[i][index++];
+        uint8_t byte1 = rdata[i][index++];
+        uint8_t byte2 = rdata[i][index++];
+        uint8_t byte3 = rdata[i][index++];
+        uint8_t byte4 = rdata[i][index++];
         channelConfigs[i].currentValue = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
 
         // TTL Output State
-        channelConfigs[i].ttlOutputState = configurations[i][index++] ? true : false;
+        channelConfigs[i].ttlOutputState = rdata[i][index++] ? true : false;
         
         // Repeatable State
-        channelConfigs[i].repeatableState = configurations[i][index++] ? true : false;
+        channelConfigs[i].repeatableState = rdata[i][index++] ? true : false;
 
         // Vérifie si le mode est MODE_SQUARE_SEQ pour lire les champs de modulation TTL
         if (channelConfigs[i].mode == MODE_SQUARE_SEQ) {
             // TTLModulation Starting Delay (4 octets)
-            byte1 = configurations[i][index++];
-            byte2 = configurations[i][index++];
-            byte3 = configurations[i][index++];
-            byte4 = configurations[i][index++];
+            byte1 = rdata[i][index++];
+            byte2 = rdata[i][index++];
+            byte3 = rdata[i][index++];
+            byte4 = rdata[i][index++];
             channelConfigs[i].TTLModulation.startingDelay = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
 
             // Frequency (4 octets)
-            byte1 = configurations[i][index++];
-            byte2 = configurations[i][index++];
-            byte3 = configurations[i][index++];
-            byte4 = configurations[i][index++];
+            byte1 = rdata[i][index++];
+            byte2 = rdata[i][index++];
+            byte3 = rdata[i][index++];
+            byte4 = rdata[i][index++];
             channelConfigs[i].TTLModulation.frequency = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
 
             // Time On (4 octets)
-            byte1 = configurations[i][index++];
-            byte2 = configurations[i][index++];
-            byte3 = configurations[i][index++];
-            byte4 = configurations[i][index++];
+            byte1 = rdata[i][index++];
+            byte2 = rdata[i][index++];
+            byte3 = rdata[i][index++];
+            byte4 = rdata[i][index++];
             channelConfigs[i].TTLModulation.timeOn = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
 
             // Number Sequence (4 octets)
-            byte1 = configurations[i][index++];
-            byte2 = configurations[i][index++];
-            byte3 = configurations[i][index++];
-            byte4 = configurations[i][index++];
+            byte1 = rdata[i][index++];
+            byte2 = rdata[i][index++];
+            byte3 = rdata[i][index++];
+            byte4 = rdata[i][index++];
             channelConfigs[i].TTLModulation.numberSequence = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
 
             // Pulse Per Sequence (4 octets)
-            byte1 = configurations[i][index++];
-            byte2 = configurations[i][index++];
-            byte3 = configurations[i][index++];
-            byte4 = configurations[i][index++];
+            byte1 = rdata[i][index++];
+            byte2 = rdata[i][index++];
+            byte3 = rdata[i][index++];
+            byte4 = rdata[i][index++];
             channelConfigs[i].TTLModulation.pulsePerSequence = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
 
             // Delay Between Sequences (4 octets)
-            byte1 = configurations[i][index++];
-            byte2 = configurations[i][index++];
-            byte3 = configurations[i][index++];
-            byte4 = configurations[i][index++];
+            byte1 = rdata[i][index++];
+            byte2 = rdata[i][index++];
+            byte3 = rdata[i][index++];
+            byte4 = rdata[i][index++];
             channelConfigs[i].TTLModulation.delayBetweenSequences = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
         }
     }

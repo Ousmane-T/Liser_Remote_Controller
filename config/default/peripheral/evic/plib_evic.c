@@ -68,6 +68,7 @@ void EVIC_Initialize( void )
     IPC31SET = 0x4U | 0x0U;  /* CHANGE_NOTICE_G:  Priority 1 / Subpriority 0 */
     IPC37SET = 0x4U | 0x0U;  /* I2C2_BUS:  Priority 1 / Subpriority 0 */
     IPC37SET = 0x40000U | 0x0U;  /* I2C2_MASTER:  Priority 1 / Subpriority 0 */
+    IPC42SET = 0x400U | 0x0U;  /* SQI1:  Priority 1 / Subpriority 0 */
     IPC48SET = 0x4U | 0x0U;  /* GLCD:  Priority 1 / Subpriority 0 */
 
 

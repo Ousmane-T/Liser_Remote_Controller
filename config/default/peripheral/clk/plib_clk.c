@@ -90,6 +90,16 @@ void CLK_Initialize( void )
     SYSKEY = 0x556699AAU;
 
 
+    /* Set up Reference Clock 2 */
+    /* REFO2CON register */
+    /* ROSEL =  SYSCLK */
+    /* DIVSWEN = 1 */
+    /* RODIV = 5 */
+    REFO2CON = 0x50200;
+
+    /* Enable oscillator (ON bit) */
+    REFO2CONSET = 0x00008000;
+
     /* Set up Reference Clock 5 */
     /* Enable oscillator (ON bit) */
     REFO5CONSET = 0x00008000;
@@ -127,7 +137,7 @@ void CLK_Initialize( void )
     PMD3 = 0x1ff01ffU;
     PMD4 = 0x18fU;
     PMD5 = 0x101d3f3fU;
-    PMD6 = 0x10a10000U;
+    PMD6 = 0x10210000U;
     PMD7 = 0x500000U;
 
     CFGCONbits.PMDLOCK = 1;

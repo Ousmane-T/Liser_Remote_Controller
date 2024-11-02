@@ -79,6 +79,7 @@ void CHANGE_NOTICE_E_Handler (void);
 void CHANGE_NOTICE_G_Handler (void);
 void I2C2_BUS_Handler (void);
 void I2C2_MASTER_Handler (void);
+void SQI1_Handler (void);
 void GLCD_Handler (void);
 
 
@@ -145,6 +146,11 @@ void __ISR(_I2C2_BUS_VECTOR, ipl1SRS) I2C2_BUS_Handler (void)
 void __ISR(_I2C2_MASTER_VECTOR, ipl1SRS) I2C2_MASTER_Handler (void)
 {
     I2C2_MASTER_InterruptHandler();
+}
+
+void __ISR(_SQI1_VECTOR, ipl1SRS) SQI1_Handler (void)
+{
+    SQI1_InterruptHandler();
 }
 
 void __ISR(_GLCD_VECTOR, ipl1SRS) GLCD_Handler (void)

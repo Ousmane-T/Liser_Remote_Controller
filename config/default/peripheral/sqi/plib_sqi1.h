@@ -1,22 +1,24 @@
 /*******************************************************************************
- System Interrupts File
+Interface definition of SQI1 PLIB.
 
-  Company:
+ Company:
     Microchip Technology Inc.
 
-  File Name:
-    interrupt.h
+ File Name:
+    plib_sqi1.h
 
-  Summary:
-    Interrupt vectors mapping
+ Summary:
+    Interface definition of the Quad Serial Peripheral Interface Plib (SQI1).
 
-  Description:
-    This file contains declarations of device vectors used by Harmony 3
- *******************************************************************************/
+ Description:
+    This file defines the interface for the SQI1 Plib.
+    It allows user to setup SQI1 and transfer data to and from slave devices
+    attached.
+*******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -36,42 +38,55 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
+*******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef INTERRUPTS_H
-#define INTERRUPTS_H
+#ifndef PLIB_SQI1_H // Guards against multiple inclusion
+#define PLIB_SQI1_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include <stdint.h>
 
+/* This section lists the other files that are included in this file.
+*/
+#include "device.h"
+#include "plib_sqi_common.h"
 
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus // Provide C++ Compatibility
+    extern "C" {
+#endif
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Handler Routines
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
-void CORE_TIMER_InterruptHandler( void );
-void TIMER_5_InterruptHandler( void );
-void TIMER_6_InterruptHandler( void );
-void TIMER_7_InterruptHandler( void );
-void CHANGE_NOTICE_A_InterruptHandler( void );
-void CHANGE_NOTICE_B_InterruptHandler( void );
-void CHANGE_NOTICE_C_InterruptHandler( void );
-void CHANGE_NOTICE_D_InterruptHandler( void );
-void CHANGE_NOTICE_E_InterruptHandler( void );
-void CHANGE_NOTICE_G_InterruptHandler( void );
-void I2C2_BUS_InterruptHandler( void );
-void I2C2_MASTER_InterruptHandler( void );
-void SQI1_InterruptHandler( void );
-void GLCD_Interrupt_Handler( void );
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 
+void SQI1_Initialize( void );
 
+void SQI1_DMASetup(void);
 
-#endif // INTERRUPTS_H
+void SQI1_DMATransfer(sqi_dma_desc_t *sqiDmaDesc);
+
+void SQI1_XIPSetup(uint32_t sqiXcon1Val, uint32_t sqiXcon2Val);
+
+void SQI1_RegisterCallback(SQI_EVENT_HANDLER event_handler, uintptr_t context);
+
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus // Provide C++ Compatibility
+}
+#endif
+// DOM-IGNORE-END
+
+#endif /* PLIB_SQI1_H */

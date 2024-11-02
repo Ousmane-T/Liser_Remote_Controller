@@ -28,6 +28,8 @@
 #include "definitions.h"                // SYS function prototypes
 #include "app.h"
 #include "can_com.h"
+#include "flash_sst26.h"
+#include "drv_sst26.h"
 //#include "config/default/gfx/legato/generated/screen/le_gen_screen_Screen0.h"
 //#include "config/default/gfx/legato/generated/screen/le_gen_screen_Screen1.h"
 
@@ -72,7 +74,9 @@ int main ( void )
     screenStates[SourceControl] = (ScreenState){widgetsScreen_SourceControl, sizeof(widgetsScreen_SourceControl) / sizeof(widgetsScreen_SourceControl[0]), 0, STATE_INIT};
     screenStates[AddChannel] = (ScreenState){widgetsScreen_AddChannel, sizeof(widgetsScreen_AddChannel) / sizeof(widgetsScreen_AddChannel[0]), 0, STATE_INIT};
     screenStates[TimeSeries] = (ScreenState){widgetsScreen_TimeSeries, sizeof(widgetsScreen_TimeSeries) / sizeof(widgetsScreen_TimeSeries[0]), 0, STATE_INIT};
-
+    
+    
+    FLASH_SST26_Initialize();
 //    
 //    GPIO_RC1_Set();
     //TMR5_Start();

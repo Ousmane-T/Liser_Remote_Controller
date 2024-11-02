@@ -302,17 +302,19 @@ void SYS_Initialize ( void* data )
 
     CAN2_Initialize();
 
+    CORETIMER_Initialize();
     TMR6_Initialize();
 
-    CORETIMER_Initialize();
-    I2C2_Initialize();
-
     TMR7_Initialize();
+
+    I2C2_Initialize();
 
     TMR5_Initialize();
 
 	BSP_Initialize();
 	DDR_Initialize();
+
+    SQI1_Initialize();
 
 
 

@@ -209,7 +209,7 @@ void EventCheckBoxWidget();
 void TIMER5_InterruptSvcRoutine();
 void TIMER6_InterruptSvcRoutine();
 void TIMER7_InterruptSvcRoutine();
-void load_configuration(uint8_t configurations[][33], int configCount);
+void load_configuration();
 
 void send_configurations();
 void timeSeriesLaunch();
